@@ -1,101 +1,132 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { Icon } from "@iconify/react";
+import Navbar from "@/components/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [result, setResult] = useState("")
+
+
+  useEffect(() => {
+    const handleTransactionCount = async () => {
+      try {
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/transactions`)
+        setResult(data.length);
+        console.log({ data });
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+
+    handleTransactionCount()
+  }, [])
+  return (
+    <main className="bg-[#0c0c0c] w-screen h-screen overflow-y-auto p-3 md:p-5 mx-auto">
+      <div className=" mx-auto bg-transparent  rounded-[16px] relative overflow-hidden border-[5px] border-[#A270FF] border-opacity-[30%]  lg:p-[40px] p-[20px] drop-shadow-xl">
+        <div className="w-[1008px] h-[656px] bg-[#A270FF] opacity-[95%] rounded-full -rotate-[22.34deg] blur-[332.36px] absolute left-[300.13px] top-[250.42px] z-10"></div>
+
+        <Image
+          src="/pattern.svg"
+          width={0}
+          height={0}
+          alt=""
+          className="absolute top-0 w-auto h-auto z-0"
+        />
+        {/** NAVBAR SECTION */}
+        <Navbar />
+
+        {/** HERO SECTION */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-12 text-white">
+          <div className="">
+            <div className="text-[60px] leading-[1.2]">
+              <div className="">Real-Time</div>
+              <div className="flex items-center lg:ml-12">Transaction</div>
+              <div className="lg:ml-56 ">Insights</div>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                className="bg-black py-4 px-6 lg:w-[64%] lg:flex lg:justify-center rounded-xl lg:rounded-lg"
+                href={"/transactions/pending"}
+              >
+                Explore Transactions
+              </Link>
+            </div>
+          </div>
+          <div className="mt-12 text-white">
+            <div className="mb-2 text-[24px] leading-[1.3]">
+              Monitor, analyze, and query blockchain <br /> transactions with
+              ease
+            </div>
+            <div className="text-[18px] font-bold">
+              <div className="flex items-center">
+                <Icon
+                  icon="ph:dot-outline-duotone"
+                  className="text-[#B18FEE] w-10 h-10"
+                />
+                Live Mempool Scanning
+              </div>
+              <div className="flex items-center">
+                <Icon
+                  icon="ph:dot-outline-duotone"
+                  className="text-[#B18FEE] w-10 h-10"
+                />
+                Advanced Transaction Filtering
+              </div>
+              <div className="flex items-center">
+                <Icon
+                  icon="ph:dot-outline-duotone"
+                  className="text-[#B18FEE] w-10 h-10"
+                />
+                GraphQL API for Flexible Queries
+              </div>
+              <div className="flex items-center">
+                <Icon
+                  icon="ph:dot-outline-duotone"
+                  className="text-[#B18FEE] w-10 h-10"
+                />
+                Historical Transaction Analysis
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {/** STATS SECTION */}
+        <div className="mt-16 z-20">
+          <div className="text-center text-white mb-8 text-[32px] leading-[1.3]">
+            Trusted by leading DeFi protocols and blockchain researchers
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-[85%] md:w-[65%] mx-auto text-center md:text-left">
+            <div className="col-span-1 bg-black bg-opacity-[45%] z-30 border-2 border-[#B18FEE] shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px]  text-white px-6 py-4 flex justify-center items-center flex-col rounded-3xl">
+              <div className="text-[40px] font-bold">{result}</div>
+              <div className="text-[24px] font-medium">
+                Transactions Processed
+              </div>
+            </div>
+            <div className="grid col-span-1 text-[24px] gap-y-4 font-medium">
+              <div className="bg-black border-2 border-[#B18FEE] rounded-3xl shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px]">
+                <div className=" bg-black z-30 text-white px-6 py-12 mb-4 leading-7 flex justify-center items-center flex-col rounded-3xl">
+                  <div className="">Faster than traditional</div>
+                  <div className="">blockchain explorers</div>
+                </div>
+              </div>
+
+              <div className="bg-black border-2 border-[#B18FEE] rounded-3xl shadow-[rgba(14,30,37,0.12)_0px_2px_4px_0px,rgba(14,30,37,0.32)_0px_2px_16px_0px]">
+                <div className=" bg-black z-30  text-white px-6 py-12  flex justify-center items-center flex-col leading-7 rounded-3xl">
+                  <div className="">Used by top</div>
+                  <div className="">blockchain projects</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
