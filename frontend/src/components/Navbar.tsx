@@ -4,9 +4,38 @@ import React, { useEffect, useState } from "react";
 import { navItems } from "@/utils/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ConnectionButton from "./ConnectionButton";
+import { useAccount, useConnect } from "wagmi";
+import { scrollSepolia } from "viem/chains";
+import { injected } from "wagmi/connectors";
+import { SENTINEL_NFT_ADDRESS, client } from "@/utils/contract";
+import { SENTINEL_NFT_ABI } from "@/utils/nft";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { connectAsync } = useConnect();
+  const { address } = useAccount();
+  const [hasNft, setHasNFT] = useState<boolean>(false)
+
+  useEffect(() => {
+    (async () => {
+      if (!address) {
+        await connectAsync({ chainId: scrollSepolia.id, connector: injected() })
+      }
+
+      if (address) {
+        const balance = await client.readContract({
+          address: SENTINEL_NFT_ADDRESS,
+          abi: SENTINEL_NFT_ABI,
+          functionName: 'balanceOf',
+          args: [address]
+        }) as number;
+
+        setHasNFT(balance > 0 ? true : false)
+      }
+
+    })();
+  }, [])
 
   const [isMobile, setIsMobile] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -44,9 +73,8 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={toggleDropdown}
-                    className={`text-white font-bold text-md leading-[21px] ${
-                      active ? "opacity-1" : "opacity-60"
-                    }`}
+                    className={`text-white font-bold text-md leading-[21px] ${active ? "opacity-1" : "opacity-60"
+                      }`}
                   >
                     {navItem.name}
                   </button>
@@ -71,19 +99,22 @@ const Navbar = () => {
 
           return (
             (!active || !isMobile) && (
-              <Link
-                href={navItem.href}
-                key={navItem.name}
-                className={`text-white font-bold text-md leading-[21px] ${
-                  active ? "opacity-1" : "opacity-60"
-                }`}
-              >
-                {navItem.name}
-              </Link>
+              <div>
+                <Link
+                  href={navItem.href}
+                  key={navItem.name}
+                  className={`text-white font-bold text-md leading-[21px] ${active ? "opacity-1" : "opacity-60"
+                    }`}
+                >
+                  {navItem.name}
+                </Link>
+              </div>
             )
           );
         })}
       </div>
+
+      <ConnectionButton />
     </div>
   );
 };
