@@ -22,6 +22,7 @@ const Navbar = () => {
   const { connectAsync } = useConnect();
   const { address } = useAccount();
   const [hasNft, setHasNFT] = useState<boolean>(false);
+  const [isHover, setIsHover] = useState<boolean>(false);
 
   useEffect(() => {
     if (!hasNft && !openRoutes.includes(pathname)) {
@@ -88,6 +89,8 @@ const Navbar = () => {
           const active = pathname.split("/")[1] === navItem.href.split("/")[1];
           const protectedPath = !hasNft && navItem.href != "/";
 
+          const showNote = isHover && protectedPath;
+
           if (navItem.name === "Transactions") {
             return (
               <div key={navItem.href} className="relative">
@@ -116,6 +119,10 @@ const Navbar = () => {
                     <button
                       type="button"
                       onClick={() => handleNavigate(pending)}
+                      onMouseOver={() => setIsHover(true)}
+                      onMouseOut={() => setIsHover(false)}
+                      onFocus={() => setIsHover(true)}
+                      onBlur={() => setIsHover(false)}
                     >
                       <div
                         className={`px-4 py-2 text-white hover:bg-gray-700 ${
@@ -125,6 +132,11 @@ const Navbar = () => {
                         Pending
                       </div>
                     </button>
+                    {showNote && (
+                      <span className="absolute -top-[200%] -right-[50%] bg-neutral-100 text-neutral-800 rounded-lg p-3 text-sm w-max font-medium z-50">
+                        Unauthorized! NFT is required for access.
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -133,9 +145,15 @@ const Navbar = () => {
 
           return (
             (!active || !isMobile) && (
-              <div>
+              <div className="relative">
                 <button
                   type="button"
+                  onMouseOver={() =>
+                    navItem.name !== "Home" && setIsHover(true)
+                  }
+                  onMouseOut={() => setIsHover(false)}
+                  onFocus={() => setIsHover(true)}
+                  onBlur={() => setIsHover(false)}
                   onClick={() => handleNavigate(navItem.href)}
                   key={navItem.name}
                   className={`text-white font-bold text-md leading-[21px] ${
@@ -144,6 +162,11 @@ const Navbar = () => {
                 >
                   {navItem.name}
                 </button>
+                {showNote && (
+                  <span className="absolute -top-[200%] -right-[50%] bg-neutral-100 text-neutral-800 rounded-lg p-3 text-sm w-max font-medium z-50">
+                    Unauthorized! NFT is required for access.
+                  </span>
+                )}
               </div>
             )
           );
