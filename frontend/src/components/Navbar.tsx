@@ -24,33 +24,44 @@ const Navbar = () => {
   const [hasNft, setHasNFT] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   if (!hasNft && pending != pathname) {
+  //     route.push(homeRoute);
+  //   }
+  //   if (!hasNft && pending != pathname) {
+  //     route.push(homeRoute);
+  //   }
+  // }, [!hasNft]);
+  // }, [hasNft, openRoutes, pathname, route]);
+
   useEffect(() => {
-    if (!hasNft && !openRoutes.includes(pathname)) {
-      route.push(homeRoute);
+    const nftBalance = async () => {
+      // if (!address && !hasNft) {
+      //   await connectAsync({
+      //     chainId: scrollSepolia.id,
+      //     connector: injected(),
+      //   });
+      // }
+
+      const balance = (await client.readContract({
+        address: SENTINEL_NFT_ADDRESS,
+        abi: SENTINEL_NFT_ABI,
+        functionName: "balanceOf",
+        args: [address],
+      })) as number;
+
+      // console.log("balance real: " + balance)
+      // Convert BigInt to a regular number
+      const balanceAsNumber = Number(balance)
+      setHasNFT(balanceAsNumber > 0)
+      console.log("balance: " + balanceAsNumber)
+    };
+
+    if (address && !hasNft) {
+      nftBalance()
     }
-  }, [hasNft, openRoutes, pathname, route]);
-
-  useEffect(() => {
-    (async () => {
-      if (!address) {
-        await connectAsync({
-          chainId: scrollSepolia.id,
-          connector: injected(),
-        });
-      }
-
-      if (address) {
-        const balance = (await client.readContract({
-          address: SENTINEL_NFT_ADDRESS,
-          abi: SENTINEL_NFT_ABI,
-          functionName: "balanceOf",
-          args: [address],
-        })) as number;
-
-        setHasNFT(balance > 0 ? true : false);
-      }
-    })();
   }, [address, connectAsync]);
+
 
   const [isMobile, setIsMobile] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -98,9 +109,8 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={toggleDropdown}
-                    className={`text-white font-bold text-md leading-[21px] ${
-                      active ? "opacity-1" : "opacity-60"
-                    }`}
+                    className={`text-white font-bold text-md leading-[21px] ${active ? "opacity-1" : "opacity-60"
+                      }`}
                   >
                     {navItem.name}
                   </button>
@@ -125,9 +135,8 @@ const Navbar = () => {
                       onBlur={() => setIsHover(false)}
                     >
                       <div
-                        className={`px-4 py-2 text-white hover:bg-gray-700 ${
-                          protectedPath && "cursor-not-allowed"
-                        }`}
+                        className={`px-4 py-2 text-white hover:bg-gray-700 ${protectedPath && "cursor-not-allowed"
+                          }`}
                       >
                         Pending
                       </div>
@@ -156,9 +165,8 @@ const Navbar = () => {
                   onBlur={() => setIsHover(false)}
                   onClick={() => handleNavigate(navItem.href)}
                   key={navItem.name}
-                  className={`text-white font-bold text-md leading-[21px] ${
-                    protectedPath && "cursor-not-allowed"
-                  } ${active ? "opacity-1" : "opacity-60"}`}
+                  className={`text-white font-bold text-md leading-[21px] ${protectedPath && "cursor-not-allowed"
+                    } ${active ? "opacity-1" : "opacity-60"}`}
                 >
                   {navItem.name}
                 </button>

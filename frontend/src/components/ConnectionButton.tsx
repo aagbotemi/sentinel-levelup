@@ -63,7 +63,7 @@ const ConnectionButton = () => {
                                     <Button
                                         onClick={openAccountModal}
                                         // type="button"
-                                        className="w-[152px] !h-[36px] !px-4 bg-[#6938EF] gap-x-2 !border border-[#7F56D9] !rounded-[24px] shdow-[0px,1px, 1px,rgba(16,24,40,0.05)]"
+                                        className="w-[200px] !h-[36px] !px-4 bg-[#6938EF] gap-x-2 !border border-[#7F56D9] !rounded-[24px] shdow-[0px,1px, 1px,rgba(16,24,40,0.05)]"
                                     >
                                         <div className="text-white text-nowrap text-sm leading-[21px] bg-[#6938EF] rounded-[40px] mr-1">
                                             {account.displayBalance ? account.displayBalance : ""}

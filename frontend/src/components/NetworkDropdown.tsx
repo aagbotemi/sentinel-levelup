@@ -3,7 +3,8 @@ import React from 'react';
 const NetworkDropdown = ({ selectedNetwork, handleChange }: { selectedNetwork: any, handleChange: any }) => {
     return (
         <div>
-            <select id="network-select" value={selectedNetwork} onChange={handleChange}>
+            <select className="w-[100%] p-3 rounded-md outline-none"
+                id="network-select" value={selectedNetwork} onChange={handleChange}>
                 <option value="">--Please choose an option--</option>
                 <option value="1">Mainnet</option>
                 <option value="11155111">Sepolia</option>

@@ -32,9 +32,9 @@ const CustomLayout = ({ children }: { children: React.ReactNode }) => {
                 fontStack: "system",
                 overlayBlur: "small",
               })}>
-              <QueryClientProvider client={queryClient}>
+              {/* <QueryClientProvider client={queryClient}> */}
                 {children}
-              </QueryClientProvider>
+              {/* </QueryClientProvider> */}
             </RainbowKitProvider>
           </QueryClientProvider>
         </WagmiProvider>;

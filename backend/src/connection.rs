@@ -8,7 +8,7 @@ use std::env::var;
 
 pub fn load_config() -> Result<Config, AppError> {
     Ok(Config {
-        web_socket_url: var("ALCHEMY_SCROLL_WEB_SOCKET_URL").unwrap(),
+        web_socket_url: var("ALCHEMY_MAINNET_WEB_SOCKET_URL").unwrap(),
         db_url: var("DATABASE_URL").unwrap(),
         server_url: var("SERVER_ADDRESS").unwrap_or("127.0.0.1::3000".to_string()),
     })

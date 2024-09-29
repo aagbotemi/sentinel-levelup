@@ -3,6 +3,8 @@ import {
   fetchPendingTransactions,
   fetchSingleTransaction,
 } from "@/services/queries";
+import { SENTINEL_NFT_ADDRESS, client } from "@/utils/contract";
+import { SENTINEL_NFT_ABI } from "@/utils/nft";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchAllTransactions = () => {
@@ -30,3 +32,20 @@ export const useFetchSingleTransaction = (id: string) => {
     enabled: !!id,
   });
 };
+
+// export const useNFTBalance = (address: string) => {
+//   return useQuery({
+//     queryKey: ['nftBalance', address],
+//     queryFn: async () => {
+//       const balance = await client.readContract({
+//         address: SENTINEL_NFT_ADDRESS,
+//         abi: SENTINEL_NFT_ABI,
+//         functionName: "balanceOf",
+//         args: [address],
+//       });
+//       return balance;
+//     },
+//     select: (data) => Number(data),
+//     enabled: !!address,
+//   });
+// };
