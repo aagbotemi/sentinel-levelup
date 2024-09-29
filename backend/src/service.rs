@@ -186,7 +186,6 @@ pub async fn get_transactions(
         .await
         .map_err(|e| AppError::DatabaseError(e.to_string()))?;
 
-    dbg!(&transactions);
     Ok(Json(transactions))
 }
 

@@ -49,12 +49,12 @@ pub async fn scan_mempool(config: &Config, state: &Arc<AppState>) -> Result<(), 
     let mut interval = interval(Duration::from_secs(1));
     loop {
         tokio::select! {
+
             Some(message) = fused_read.next() => {
                 match message {
                     Ok(Message::Text(res)) => {
                         if let Ok(response) = serde_json::from_str::<TxHashResponse>(&res) {
                             let tx_hash = response.params.result;
-
                             let tx_data = json!({
                                 "jsonrpc": "2.0",
                                 "id": 1,
@@ -69,6 +69,7 @@ pub async fn scan_mempool(config: &Config, state: &Arc<AppState>) -> Result<(), 
 
                             //     if let Some(result) = check_tx_data_response_text.get("result") {
 
+                            //         dbg!(&result);
                             //     }
                             // }
 
@@ -103,6 +104,13 @@ pub async fn scan_mempool(config: &Config, state: &Arc<AppState>) -> Result<(), 
 
                     if let Some(Ok(Message::Text(response_text))) = fused_read.next().await {
                         let tx_response: Value = serde_json::from_str(&response_text)?;
+
+
+
+
+
+
+
 
                         if let Some(result) = tx_response.get("result") {
                             let _contract_type =  check_contract_status(config, result).await?;
@@ -175,12 +183,12 @@ pub async fn scan_mempool(config: &Config, state: &Arc<AppState>) -> Result<(), 
                                         &_contract_type.as_str().to_string()
                                     ])?;
 
+                                        // dbg!("this is it");
                                     // Save response to file
                                     let file_path = format!("responses/{}.json", tx_hash);
                                     let mut file = File::create(&file_path).await?;
                                     file.write_all(serde_json::to_string(&transaction)?.as_bytes()).await?;
                                     writer.flush()?;
-
 
 
 

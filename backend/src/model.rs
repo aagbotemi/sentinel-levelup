@@ -64,7 +64,7 @@ pub struct TransactionFilter {
     pub mempool_time_max: Option<i64>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Config {
     pub web_socket_url: String,
     pub db_url: String,
@@ -93,6 +93,8 @@ pub enum AppError {
     DatabaseError(String),
     #[error("Not found error: {0}")]
     NotFound(String),
+    #[error("Connection error: {0}")]
+    WebSocketConnectionError(String),
 }
 
 impl IntoResponse for AppError {
@@ -102,6 +104,9 @@ impl IntoResponse for AppError {
             AppError::JsonError(_) => (StatusCode::BAD_REQUEST, self.to_string()),
             AppError::CsvError(_) => (StatusCode::BAD_REQUEST, self.to_string()),
             AppError::IoError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
+            AppError::WebSocketConnectionError(_) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, self.to_string())
+            }
             AppError::EnvVarError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
             AppError::Other(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
             AppError::DatabaseError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),

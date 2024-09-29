@@ -3,7 +3,7 @@ use async_tungstenite::{
     tokio::{connect_async, ConnectStream},
     WebSocketStream,
 };
-use log::info;
+use log::{error, info};
 use std::env::var;
 
 pub fn load_config() -> Result<Config, AppError> {
@@ -15,7 +15,22 @@ pub fn load_config() -> Result<Config, AppError> {
 }
 
 pub async fn connect_websocket(url: &str) -> Result<WebSocketStream<ConnectStream>, AppError> {
-    let (ws_stream, _) = connect_async(url).await?;
-    info!("WebSocket connected");
-    Ok(ws_stream)
+    // let (ws_stream, _) = connect_async(url).await?;
+    // info!("WebSocket connected");
+    // println!("THIS IS THE URL: {}", url);
+    // Ok(ws_stream)
+
+    match connect_async(url).await {
+        Ok((ws_stream, response)) => {
+            info!(
+                "WebSocket connected. Response status: {}",
+                response.status()
+            );
+            Ok(ws_stream)
+        }
+        Err(e) => {
+            error!("Failed to connect to WebSocket: {}", e);
+            Err(AppError::WebSocketConnectionError(e.to_string()))
+        }
+    }
 }
