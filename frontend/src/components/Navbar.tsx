@@ -4,13 +4,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import { navItems } from "@/utils/constants";
 import { usePathname, useRouter } from "next/navigation";
 import ConnectionButton from "./ConnectionButton";
-import { useAccount, useConnect } from "wagmi";
-import { scrollSepolia } from "viem/chains";
-import { injected } from "wagmi/connectors";
-import { SENTINEL_NFT_ADDRESS, client } from "@/utils/contract";
-import { SENTINEL_NFT_ABI } from "@/utils/nft";
+import { useNftContext } from "@/hooks";
 
 const Navbar = () => {
+  const { hasNft } = useNftContext();
   const pending = "/transactions/pending";
   const completed = "/transactions/completed";
   const homeRoute = "/";
@@ -19,49 +16,14 @@ const Navbar = () => {
 
   const pathname = usePathname();
   const route = useRouter();
-  const { connectAsync } = useConnect();
-  const { address } = useAccount();
-  const [hasNft, setHasNFT] = useState<boolean>(false);
+
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (!hasNft && pending != pathname) {
-  //     route.push(homeRoute);
-  //   }
-  //   if (!hasNft && pending != pathname) {
-  //     route.push(homeRoute);
-  //   }
-  // }, [!hasNft]);
-  // }, [hasNft, openRoutes, pathname, route]);
-
   useEffect(() => {
-    const nftBalance = async () => {
-      // if (!address && !hasNft) {
-      //   await connectAsync({
-      //     chainId: scrollSepolia.id,
-      //     connector: injected(),
-      //   });
-      // }
-
-      const balance = (await client.readContract({
-        address: SENTINEL_NFT_ADDRESS,
-        abi: SENTINEL_NFT_ABI,
-        functionName: "balanceOf",
-        args: [address],
-      })) as number;
-
-      // console.log("balance real: " + balance)
-      // Convert BigInt to a regular number
-      const balanceAsNumber = Number(balance)
-      setHasNFT(balanceAsNumber > 0)
-      console.log("balance: " + balanceAsNumber)
-    };
-
-    if (address && !hasNft) {
-      nftBalance()
+    if (!hasNft && !openRoutes.includes(pathname)) {
+      route.push(homeRoute);
     }
-  }, [address, connectAsync]);
-
+  }, [hasNft, openRoutes, pathname, route]);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -109,8 +71,9 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={toggleDropdown}
-                    className={`text-white font-bold text-md leading-[21px] ${active ? "opacity-1" : "opacity-60"
-                      }`}
+                    className={`text-white font-bold text-md leading-[21px] ${
+                      active ? "opacity-1" : "opacity-60"
+                    }`}
                   >
                     {navItem.name}
                   </button>
@@ -135,8 +98,9 @@ const Navbar = () => {
                       onBlur={() => setIsHover(false)}
                     >
                       <div
-                        className={`px-4 py-2 text-white hover:bg-gray-700 ${protectedPath && "cursor-not-allowed"
-                          }`}
+                        className={`px-4 py-2 text-white hover:bg-gray-700 ${
+                          protectedPath && "cursor-not-allowed"
+                        }`}
                       >
                         Pending
                       </div>
@@ -165,8 +129,9 @@ const Navbar = () => {
                   onBlur={() => setIsHover(false)}
                   onClick={() => handleNavigate(navItem.href)}
                   key={navItem.name}
-                  className={`text-white font-bold text-md leading-[21px] ${protectedPath && "cursor-not-allowed"
-                    } ${active ? "opacity-1" : "opacity-60"}`}
+                  className={`text-white font-bold text-md leading-[21px] ${
+                    protectedPath && "cursor-not-allowed"
+                  } ${active ? "opacity-1" : "opacity-60"}`}
                 >
                   {navItem.name}
                 </button>

@@ -7,7 +7,8 @@ import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { config } from "@/utils/contract";
 
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
+import { NftProvider } from "@/contexts/NFTProvider";
 
 const CustomLayout = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
@@ -31,13 +32,13 @@ const CustomLayout = ({ children }: { children: React.ReactNode }) => {
                 borderRadius: "large",
                 fontStack: "system",
                 overlayBlur: "small",
-              })}>
-              {/* <QueryClientProvider client={queryClient}> */}
-                {children}
-              {/* </QueryClientProvider> */}
+              })}
+            >
+              <NftProvider>{children}</NftProvider>
             </RainbowKitProvider>
           </QueryClientProvider>
-        </WagmiProvider>;
+        </WagmiProvider>
+        ;
       </body>
     </html>
   );
