@@ -62,3 +62,8 @@ interface ITrxRow {
   isCopy?: boolean;
   unit?: string;
 }
+
+interface INftContext {
+  hasNft: boolean;
+  checkNftOwnership: () => Promise<void>;
+}

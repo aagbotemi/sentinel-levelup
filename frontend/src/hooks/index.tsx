@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { NftContext } from "@/contexts/NFTContext";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 export const collapseHash = (value: string) => {
   if (value) {
@@ -65,4 +66,12 @@ export const useScreenSize = () => {
   }, []);
 
   return screenSize;
+};
+
+export const useNftContext = () => {
+  const context = useContext(NftContext);
+  if (!context) {
+    throw new Error("useNftContext must be used within an NftProvider");
+  }
+  return context;
 };

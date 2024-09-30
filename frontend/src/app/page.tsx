@@ -6,25 +6,28 @@ import { Icon } from "@iconify/react";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNftContext } from "@/hooks";
 
 export default function Home() {
+  const { hasNft } = useNftContext();
+  const [isHover, setIsHover] = useState<boolean>(false);
 
-  const [result, setResult] = useState("")
-
+  const [result, setResult] = useState("");
 
   useEffect(() => {
     const handleTransactionCount = async () => {
       try {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API}/transactions`)
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API}/transactions`
+        );
         setResult(data.length);
-        console.log({ data });
       } catch (error: any) {
         console.log(error.message);
       }
-    }
+    };
 
-    handleTransactionCount()
-  }, [])
+    handleTransactionCount();
+  }, []);
   return (
     <main className="bg-[#0c0c0c] w-screen h-screen overflow-y-auto p-3 md:p-5 mx-auto">
       <div className=" mx-auto bg-transparent  rounded-[16px] relative overflow-hidden border-[5px] border-[#A270FF] border-opacity-[30%]  lg:p-[40px] p-[20px] drop-shadow-xl">
@@ -49,13 +52,25 @@ export default function Home() {
               <div className="lg:ml-56 ">Insights</div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 relative">
               <Link
-                className="bg-black py-4 px-6 lg:w-[64%] lg:flex lg:justify-center rounded-xl lg:rounded-lg"
-                href={"/transactions/pending"}
+                onMouseOver={() => setIsHover(true)}
+                onMouseOut={() => setIsHover(false)}
+                onFocus={() => setIsHover(true)}
+                onBlur={() => setIsHover(false)}
+                className={`bg-black py-4 px-6 lg:w-[64%] lg:flex lg:justify-center rounded-xl lg:rounded-lg ${
+                  !hasNft && "cursor-not-allowed"
+                }`}
+                href={hasNft ? "/transactions/pending" : "#"}
               >
                 Explore Transactions
               </Link>
+
+              {isHover && !hasNft && (
+                <span className="absolute -top-14 left-0 bg-neutral-100 text-neutral-800 rounded-lg p-3 text-sm w-max font-medium z-50">
+                  Unauthorized! NFT is required for access.
+                </span>
+              )}
             </div>
           </div>
           <div className="mt-12 text-white">
