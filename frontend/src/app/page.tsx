@@ -21,7 +21,6 @@ export default function Home() {
           `${process.env.NEXT_PUBLIC_API}/transactions`
         );
         setResult(data.length);
-        console.log({ data });
       } catch (error: any) {
         console.log(error.message);
       }

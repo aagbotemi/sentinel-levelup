@@ -11,7 +11,7 @@ export const NftProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { address } = useAccount();
 
-  const [hasNft, setHasNFT] = useState<boolean>(false);
+  const [hasNft, setHasNFT] = useState<boolean>(true);
 
   const checkNftOwnership = async () => {
     if (!address) return;
