@@ -47,23 +47,24 @@ const Balance = () => {
   return (
     <main className="bg-[#0c0c0c] w-screen h-screen overflow-y-auto p-3 md:p-5 mx-auto">
       <div className=" mx-auto bg-transparent w-full h-full rounded-[16px] relative overflow-hidden border-[5px] border-[#A270FF] border-opacity-[30%]  lg:p-[40px] p-[20px] drop-shadow-xl">
-        <div className="w-[1008px] h-[656px] bg-[#A270FF] opacity-[95%] rounded-full -rotate-[22.34deg] blur-[332.36px] absolute left-[300.13px] top-[250.42px] z-10"></div>
+        <div className="w-[1008px] h-[656px] bg-[#A270FF] opacity-[95%] rounded-full -rotate-[22.34deg] blur-[332.36px] absolute right-[300.13px] bottom-[250.42px] -z-10"></div>
         <div className="mb-16">
           <Navbar />
         </div>
         <div className=" w-[550px] mx-auto p-4">
-
           <div className="bg-white inline px-1 py-3 rounded-md w-[100%]">
             <button
-              className={`${activeTab == "erc20" ? "bg-[#A270FF]" : null
-                } p-2 rounded-md font-semibold w-[49.2%]`}
+              className={`${
+                activeTab == "erc20" ? "bg-[#A270FF]" : null
+              } p-2 rounded-md font-semibold w-[49.2%]`}
               onClick={() => setActiveTab("erc20")}
             >
               ERC20 Balance
             </button>
             <button
-              className={`${activeTab == "native" ? "bg-[#A270FF]" : null
-                } p-2 rounded-md font-semibold w-[49.2%]`}
+              className={`${
+                activeTab == "native" ? "bg-[#A270FF]" : null
+              } p-2 rounded-md font-semibold w-[49.2%]`}
               onClick={() => setActiveTab("native")}
             >
               Native Balance
@@ -119,8 +120,6 @@ const Balance = () => {
             </div>
 
             <div className="flex justify-center">
-
-
               <button
                 className={`bg-[#A270FF] p-3 font-semibold rounded-md w-[70%]`}
                 onClick={handleSubmit}
