@@ -3,8 +3,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { navItems } from "@/utils/constants";
 import { usePathname, useRouter } from "next/navigation";
-import ConnectionButton from "./ConnectionButton";
 import { useNftContext } from "@/hooks";
+import W3Button from "./W3Button";
 
 const Navbar = () => {
   const { hasNft } = useNftContext();
@@ -146,7 +146,7 @@ const Navbar = () => {
         })}
       </div>
 
-      <ConnectionButton />
+      <W3Button />
     </div>
   );
 };
