@@ -1,5 +1,5 @@
 # SENTINEL
-Sentinel is a RUST-based token-gated application, built on the Scroll blockchain. It designed to handle blockchain transaction in the mempool. It can be used to monitor Pending Transactions and analyse them. It can also be used to check coin and token Balances of any address.
+Sentinel is a RUST-based token-gated application, built on the Scroll blockchain, with the Reown AppKit integrated. It designed to handle blockchain transaction in the mempool. It can be used to monitor Pending Transactions and analyse them. It can also be used to check coin and token Balances of any address.
 
 ## Deployed and verified smart contract on Scroll
 0xed0a67003F512E685BC8D57F01251188242c5D5e
